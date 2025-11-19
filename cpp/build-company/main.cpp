@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <Windows.h>
 #include "ConstructionCompany.hpp"
 #include "BulkMaterial.hpp"
 #include "StructuralMaterial.hpp"
@@ -23,6 +24,10 @@ void displayStaffByPointer(const Staff* staff) {
 }
 
 int main() {
+
+    SetConsoleCP(CP_UTF8);
+    SetConsoleOutputCP(CP_UTF8);
+
     cout << "========================================" << endl;
     cout << "Система управления строительной компанией" << endl;
     cout << "========================================\n" << endl;
