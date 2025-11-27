@@ -10,112 +10,65 @@ Console.WriteLine("C# реализация для Лабораторной ра�
 Console.WriteLine("========================================\n");
 
 // ===================================================================
-// 1. СТАТИЧЕСКАЯ ИНИЦИАЛИЗАЦИЯ ОБЪЕКТОВ
+// 1. СОЗДАНИЕ ОБЪЕКТОВ
 // ===================================================================
-Console.WriteLine("\n### ДЕМОНСТРАЦИЯ 1: Статическая инициализация ###\n");
+// В C# все объекты классов создаются в куче (heap) с помощью оператора new
+// и автоматически удаляются сборщиком мусора (Garbage Collector)
+Console.WriteLine("\n### ДЕМОНСТРАЦИЯ 1: Создание объектов ###\n");
 
-// Статическая инициализация материалов
+// Создание материалов
 BulkMaterial cement = new BulkMaterial("Portland Cement M500", MeasureType.Tons, 50.5f);
 StructuralMaterial brick = new StructuralMaterial("Red Brick", 0.25f, 0.12f, 0.065f, 10000);
-
-Console.WriteLine("Созданы статические объекты:");
-cement.DisplayInfo();
-Console.WriteLine();
-brick.DisplayInfo();
-
-// Статическая инициализация оборудования
-Tool drill = new Tool("Bosch GSB 13 RE", 5, ToolType.PowerDrill);
-Console.WriteLine();
-drill.DisplayInfo();
-
-// Статическая инициализация строительного объекта
-ConstructionObject project1 = new ConstructionObject("123 Main Street", ObjectType.Residential, ProjectStatus.Planning);
-Console.WriteLine();
-project1.DisplayInfo();
-
-// Статическая инициализация сотрудника
-Staff worker1 = new Staff("John Smith", StaffRank.Worker, StaffSpecialization.Mason,
-                          "+1-555-0101", "2023-01-15", 45000);
-Console.WriteLine();
-worker1.DisplayInfo();
-
-// ===================================================================
-// 2. ДИНАМИЧЕСКАЯ ИНИЦИАЛИЗАЦИЯ ОБЪЕКТОВ (new)
-// ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 2: Динамическая инициализация с new ###\n");
-
-// Динамическая инициализация материалов
 BulkMaterial sand = new BulkMaterial("River Sand", MeasureType.CubicMeters, 100.0f);
 StructuralMaterial rebar = new StructuralMaterial("Steel Rebar 12mm", 0.012f, 0.012f, 6.0f, 500);
 
-Console.WriteLine("Динамически выделенные объекты:");
+Console.WriteLine("Созданные материалы:");
+cement.DisplayInfo();
+Console.WriteLine();
+brick.DisplayInfo();
+Console.WriteLine();
 sand.DisplayInfo();
 Console.WriteLine();
 rebar.DisplayInfo();
 
-// Динамическая инициализация оборудования
+// Создание оборудования (можно форматировать в несколько строк для читаемости)
+Tool drill = new Tool("Bosch GSB 13 RE", 5, ToolType.PowerDrill);
 ConstructionMachinery excavator = new ConstructionMachinery(
     "Caterpillar 320", 2, VehicleType.Excavator, FuelType.Diesel
 );
+
+Console.WriteLine();
+drill.DisplayInfo();
 Console.WriteLine();
 excavator.DisplayInfo();
 
-// Динамическая инициализация сотрудника
+// Создание строительного объекта
+ConstructionObject project1 = new ConstructionObject("123 Main Street", ObjectType.Residential, ProjectStatus.Planning);
+Console.WriteLine();
+project1.DisplayInfo();
+
+// Создание сотрудников
+Staff worker1 = new Staff("John Smith", StaffRank.Worker, StaffSpecialization.Mason,
+                          "+1-555-0101", "2023-01-15", 45000);
 Staff engineer1 = new Staff(
     "Emily Johnson", StaffRank.Engineer, StaffSpecialization.General,
     "+1-555-0202", "2022-06-01", 75000
 );
+
+Console.WriteLine();
+worker1.DisplayInfo();
 Console.WriteLine();
 engineer1.DisplayInfo();
 
-// Динамическая инициализация строительной компании
+// Создание строительной компании
 ConstructionCompany company = new ConstructionCompany("BuildMaster Construction Co.");
+Console.WriteLine();
+company.DisplayInfo();
 
 // ===================================================================
-// 3. РАБОТА СО ССЫЛКАМИ (в C# все объекты классов - ссылочные типы)
+// 2. МАССИВЫ ОБЪЕКТОВ
 // ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 3: Работа со ссылками ###\n");
-
-// Демонстрация работы со ссылкой на объект Material
-void DisplayMaterialByReference(Material material)
-{
-    Console.WriteLine("\n=== Демонстрация работы со ссылками (Material) ===");
-    material.DisplayInfo();
-}
-
-// Демонстрация работы со ссылкой на объект Staff
-void DisplayStaffByReference(Staff staff)
-{
-    Console.WriteLine("\n=== Демонстрация работы со ссылками (Staff) ===");
-    if (staff != null)
-    {
-        staff.DisplayInfo();
-    }
-}
-
-// Работа со ссылкой
-DisplayMaterialByReference(cement);
-
-// Работа со ссылкой на сотрудника
-DisplayStaffByReference(engineer1);
-
-// Демонстрация работы со ссылками через присваивание
-Console.WriteLine("\n=== Работа со ссылкой через присваивание ===");
-Material cementRef = cement;
-Console.WriteLine($"Название материала через ссылку: {cementRef.GetName()}");
-
-// Изменение через ссылку влияет на оригинальный объект
-Console.WriteLine("\n=== Изменение объекта через ссылку ===");
-Staff engineerRef = engineer1;
-Console.WriteLine($"Исходная зарплата инженера: ${engineer1.GetSalary()}");
-engineerRef.SetSalary(80000);
-Console.WriteLine($"Зарплата после изменения через ссылку: ${engineer1.GetSalary()}");
-Console.WriteLine($"Зарплата через ссылку engineerRef: ${engineerRef.GetSalary()}");
-
-// ===================================================================
-// 4. МАССИВ ОБЪЕКТОВ КЛАССА
-// ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 4: Массив объектов класса ###\n");
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 2: Массивы объектов ###\n");
 
 // Создание массива объектов ConstructionObject
 int arraySize = 3;
@@ -125,17 +78,12 @@ projectArray[0] = new ConstructionObject("456 Oak Avenue", ObjectType.Commercial
 projectArray[1] = new ConstructionObject("789 Pine Road", ObjectType.Industrial, ProjectStatus.Planning);
 projectArray[2] = new ConstructionObject("321 Elm Street", ObjectType.Residential, ProjectStatus.InProgress);
 
-Console.WriteLine("Массив объектов ConstructionObject:");
+Console.WriteLine("Массив строительных объектов:");
 for (int i = 0; i < arraySize; i++)
 {
     Console.WriteLine($"\nПроект [{i}]:");
     projectArray[i].DisplayInfo();
 }
-
-// ===================================================================
-// 5. МАССИВ ДИНАМИЧЕСКИХ ОБЪЕКТОВ КЛАССА
-// ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 5: Массив динамических объектов ###\n");
 
 // Создание массива объектов Staff
 const int staffCount = 4;
@@ -150,7 +98,7 @@ staffArray[2] = new Staff("Robert Wilson", StaffRank.SiteManager, StaffSpecializ
 staffArray[3] = new Staff("Lisa Martinez", StaffRank.Worker, StaffSpecialization.Carpenter,
                           "+1-555-0606", "2023-07-01", 46000);
 
-Console.WriteLine("Массив динамических объектов Staff:");
+Console.WriteLine("\n\nМассив сотрудников:");
 for (int i = 0; i < staffCount; i++)
 {
     Console.WriteLine($"\nСотрудник [{i}]:");
@@ -158,9 +106,9 @@ for (int i = 0; i < staffCount; i++)
 }
 
 // ===================================================================
-// 6. КОМПЛЕКСНАЯ ДЕМОНСТРАЦИЯ СИСТЕМЫ
+// 3. КОМПЛЕКСНАЯ ДЕМОНСТРАЦИЯ СИСТЕМЫ
 // ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 6: Полная интеграция системы ###\n");
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 3: Полная интеграция системы ###\n");
 
 // Создание склада
 Warehouse mainWarehouse = new Warehouse("100 Industrial Drive");
@@ -205,9 +153,9 @@ company.DisplayAllObjects();
 mainWarehouse.DisplayInventory();
 
 // ===================================================================
-// 7. ДЕМОНСТРАЦИЯ ОПЕРАЦИЙ С ОБЪЕКТАМИ
+// 4. ОПЕРАЦИИ С ОБЪЕКТАМИ
 // ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 7: Операции с объектами ###\n");
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 4: Операции с объектами ###\n");
 
 // Работа с материалами
 Console.WriteLine("\n--- Операции с материалами ---");
@@ -234,9 +182,9 @@ Console.WriteLine($"Обновлена зарплата сотрудника {st
                   $"{staffArray[0].GetSalary()}");
 
 // ===================================================================
-// 8. ДЕМОНСТРАЦИЯ СБОРКИ МУСОРА В C#
+// 5. УПРАВЛЕНИЕ ПАМЯТЬЮ В C#
 // ===================================================================
-Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 8: Управление памятью в C# ###\n");
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 5: Управление памятью в C# ###\n");
 
 Console.WriteLine("В C# управление памятью происходит автоматически через Garbage Collector.");
 Console.WriteLine("Объекты удаляются автоматически, когда на них нет ссылок.");
