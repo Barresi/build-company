@@ -18,7 +18,16 @@ private:
     std::vector<std::shared_ptr<ConstructionObject>> constructionObjects;
     int salary;
 
+    // СТАТИЧЕСКИЕ ПОЛЯ
+    static int totalStaffCreated;  // Счётчик всех созданных сотрудников
+    static const int MIN_SALARY = 30000;  // Минимальная зарплата
+    static const int MAX_SALARY = 500000;  // Максимальная зарплата
+
 public:
+    // СТАТИЧЕСКИЕ МЕТОДЫ
+    static int getTotalStaffCreated();  // Получить общее количество созданных сотрудников
+    static void resetStaffCounter();  // Сбросить счётчик (для тестирования)
+    static bool isValidSalary(int salary);  // Проверить валидность зарплаты
     // Конструктор
     Staff(const std::string& fullname, StaffRank rank, StaffSpecialization specialization,
           const std::string& telephone, const std::string& hiringDate, int salary);
