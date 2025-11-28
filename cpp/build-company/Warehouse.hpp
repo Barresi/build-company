@@ -4,13 +4,14 @@
 #include "Equipment.hpp"
 #include <string>
 #include <vector>
+#include <memory>
 
 // Класс, представляющий склад для материалов и оборудования
 class Warehouse {
 private:
     std::string address;
-    std::vector<Material*> materials;
-    std::vector<Equipment*> equipment;
+    std::vector<std::shared_ptr<Material>> materials;
+    std::vector<std::shared_ptr<Equipment>> equipment;
 
 public:
     // Конструктор
@@ -21,19 +22,23 @@ public:
 
     // Геттеры
     std::string getAddress() const;
-    const std::vector<Material*>& getMaterials() const;
-    const std::vector<Equipment*>& getEquipment() const;
+    const std::vector<std::shared_ptr<Material>>& getMaterials() const;
+    const std::vector<std::shared_ptr<Equipment>>& getEquipment() const;
 
     // Сеттеры
     void setAddress(const std::string& address);
 
     // Добавление материалов и оборудования
-    void addMaterial(Material* material);
-    void addEquipment(Equipment* equipment);
+    void addMaterial(std::shared_ptr<Material> material);
+    void addEquipment(std::shared_ptr<Equipment> equipment);
 
     // Удаление материалов и оборудования
-    void removeMaterial(Material* material);
-    void removeEquipment(Equipment* equipment);
+    void removeMaterial(std::shared_ptr<Material> material);
+    void removeEquipment(std::shared_ptr<Equipment> equipment);
+
+    // Перегрузка оператора [] для доступа к материалам по индексу
+    std::shared_ptr<Material> operator[](size_t index);
+    const std::shared_ptr<Material> operator[](size_t index) const;
 
     // Отображение информации
     void displayInfo() const;

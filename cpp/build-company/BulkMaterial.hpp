@@ -13,6 +13,9 @@ public:
     // Конструктор
     BulkMaterial(const std::string& name, MeasureType measureUnit, float count);
 
+    // Конструктор копирования
+    BulkMaterial(const BulkMaterial& other);
+
     // Деструктор
     ~BulkMaterial();
 
@@ -30,4 +33,13 @@ public:
 
     // Переопределение функции отображения информации
     void displayInfo() const override;
+
+    // Перегрузка оператора + для сложения количества материалов
+    BulkMaterial operator+(const BulkMaterial& other) const;
+
+    // Перегрузка оператора += для добавления количества
+    BulkMaterial& operator+=(const BulkMaterial& other);
+
+    // Перегрузка оператора == для сравнения
+    bool operator==(const BulkMaterial& other) const;
 };

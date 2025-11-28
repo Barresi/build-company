@@ -7,6 +7,12 @@ BulkMaterial::BulkMaterial(const std::string& name, MeasureType measureUnit, flo
     : Material(name), measureUnit(measureUnit), count(count) {
 }
 
+// Конструктор копирования (вызов конструктора базового класса)
+BulkMaterial::BulkMaterial(const BulkMaterial& other)
+    : Material(other.name), measureUnit(other.measureUnit), count(other.count) {
+    std::cout << "Вызван конструктор копирования BulkMaterial для: " << name << std::endl;
+}
+
 // Реализация деструктора
 BulkMaterial::~BulkMaterial() {
     std::cout << "Вызван деструктор BulkMaterial для: " << name << std::endl;
@@ -56,4 +62,30 @@ void BulkMaterial::displayInfo() const {
     std::cout << "Название: " << name << std::endl;
     std::cout << "Количество: " << std::fixed << std::setprecision(2) << count << " "
               << measureTypeToString(measureUnit) << std::endl;
+}
+
+// Перегрузка оператора + для сложения количества материалов
+BulkMaterial BulkMaterial::operator+(const BulkMaterial& other) const {
+    if (this->name != other.name || this->measureUnit != other.measureUnit) {
+        std::cout << "Предупреждение: Попытка сложить разные материалы или единицы измерения!" << std::endl;
+        return *this;
+    }
+    return BulkMaterial(this->name, this->measureUnit, this->count + other.count);
+}
+
+// Перегрузка оператора += для добавления количества
+BulkMaterial& BulkMaterial::operator+=(const BulkMaterial& other) {
+    if (this->name == other.name && this->measureUnit == other.measureUnit) {
+        this->count += other.count;
+    } else {
+        std::cout << "Предупреждение: Попытка добавить разный материал или единицу измерения!" << std::endl;
+    }
+    return *this;
+}
+
+// Перегрузка оператора == для сравнения
+bool BulkMaterial::operator==(const BulkMaterial& other) const {
+    return this->name == other.name &&
+           this->measureUnit == other.measureUnit &&
+           this->count == other.count;
 }

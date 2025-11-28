@@ -19,3 +19,14 @@ std::string Material::getName() const {
 void Material::setName(const std::string& name) {
     this->name = name;
 }
+
+// Перегрузка оператора == для сравнения материалов по имени
+bool Material::operator==(const Material& other) const {
+    return this->name == other.name;
+}
+
+// ДРУЖЕСТВЕННАЯ ФУНКЦИЯ: Перегрузка оператора << для вывода материала
+std::ostream& operator<<(std::ostream& os, const Material& material) {
+    os << "Material: " << material.name;
+    return os;
+}

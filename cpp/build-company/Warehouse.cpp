@@ -16,11 +16,11 @@ std::string Warehouse::getAddress() const {
     return address;
 }
 
-const std::vector<Material*>& Warehouse::getMaterials() const {
+const std::vector<std::shared_ptr<Material>>& Warehouse::getMaterials() const {
     return materials;
 }
 
-const std::vector<Equipment*>& Warehouse::getEquipment() const {
+const std::vector<std::shared_ptr<Equipment>>& Warehouse::getEquipment() const {
     return equipment;
 }
 
@@ -30,23 +30,23 @@ void Warehouse::setAddress(const std::string& address) {
 }
 
 // Добавление материала
-void Warehouse::addMaterial(Material* material) {
-    if (material != nullptr) {
+void Warehouse::addMaterial(std::shared_ptr<Material> material) {
+    if (material) {
         materials.push_back(material);
         std::cout << "Добавлен материал '" << material->getName() << "' на склад по адресу " << address << std::endl;
     }
 }
 
 // Добавление оборудования
-void Warehouse::addEquipment(Equipment* equipment) {
-    if (equipment != nullptr) {
+void Warehouse::addEquipment(std::shared_ptr<Equipment> equipment) {
+    if (equipment) {
         this->equipment.push_back(equipment);
         std::cout << "Добавлено оборудование '" << equipment->getName() << "' на склад по адресу " << address << std::endl;
     }
 }
 
 // Удаление материала
-void Warehouse::removeMaterial(Material* material) {
+void Warehouse::removeMaterial(std::shared_ptr<Material> material) {
     auto it = std::find(materials.begin(), materials.end(), material);
     if (it != materials.end()) {
         materials.erase(it);
@@ -55,7 +55,7 @@ void Warehouse::removeMaterial(Material* material) {
 }
 
 // Удаление оборудования
-void Warehouse::removeEquipment(Equipment* equipment) {
+void Warehouse::removeEquipment(std::shared_ptr<Equipment> equipment) {
     auto it = std::find(this->equipment.begin(), this->equipment.end(), equipment);
     if (it != this->equipment.end()) {
         this->equipment.erase(it);
@@ -69,6 +69,23 @@ void Warehouse::displayInfo() const {
     std::cout << "Адрес: " << address << std::endl;
     std::cout << "Всего материалов: " << materials.size() << std::endl;
     std::cout << "Всего оборудования: " << equipment.size() << std::endl;
+}
+
+// Перегрузка оператора [] для доступа к материалам по индексу
+std::shared_ptr<Material> Warehouse::operator[](size_t index) {
+    if (index < materials.size()) {
+        return materials[index];
+    }
+    std::cout << "Ошибка: Индекс материала вне диапазона!" << std::endl;
+    return nullptr;
+}
+
+const std::shared_ptr<Material> Warehouse::operator[](size_t index) const {
+    if (index < materials.size()) {
+        return materials[index];
+    }
+    std::cout << "Ошибка: Индекс материала вне диапазона!" << std::endl;
+    return nullptr;
 }
 
 // Отображение полного инвентаря
