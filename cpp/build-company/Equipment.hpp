@@ -1,5 +1,4 @@
-#ifndef EQUIPMENT_HPP
-#define EQUIPMENT_HPP
+#pragma once
 
 #include <string>
 
@@ -31,5 +30,3 @@ public:
     // Чисто виртуальная функция для отображения информации об оборудовании
     virtual void displayInfo() const = 0;
 };
-
-#endif // EQUIPMENT_HPP

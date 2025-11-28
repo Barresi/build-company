@@ -1,5 +1,4 @@
-#ifndef TOOL_HPP
-#define TOOL_HPP
+#pragma once
 
 #include "Equipment.hpp"
 #include "Enums.hpp"
@@ -25,5 +24,3 @@ public:
     // Переопределение функции отображения информации
     void displayInfo() const override;
 };
-
-#endif // TOOL_HPP

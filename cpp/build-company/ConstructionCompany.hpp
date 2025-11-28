@@ -1,19 +1,19 @@
-#ifndef CONSTRUCTION_COMPANY_HPP
-#define CONSTRUCTION_COMPANY_HPP
+#pragma once
 
 #include "Staff.hpp"
 #include "Warehouse.hpp"
 #include "ConstructionObject.hpp"
 #include <string>
 #include <vector>
+#include <memory>
 
 // Главный класс, представляющий строительную компанию
 class ConstructionCompany {
 private:
     std::string companyName;
-    std::vector<Staff*> staff;
-    std::vector<Warehouse*> warehouses;
-    std::vector<ConstructionObject*> constructionObjects;
+    std::vector<std::shared_ptr<Staff>> staff;
+    std::vector<std::shared_ptr<Warehouse>> warehouses;
+    std::vector<std::shared_ptr<ConstructionObject>> constructionObjects;
 
 public:
     // Конструктор
@@ -24,23 +24,23 @@ public:
 
     // Геттеры
     std::string getCompanyName() const;
-    const std::vector<Staff*>& getStaff() const;
-    const std::vector<Warehouse*>& getWarehouses() const;
-    const std::vector<ConstructionObject*>& getConstructionObjects() const;
+    const std::vector<std::shared_ptr<Staff>>& getStaff() const;
+    const std::vector<std::shared_ptr<Warehouse>>& getWarehouses() const;
+    const std::vector<std::shared_ptr<ConstructionObject>>& getConstructionObjects() const;
 
     // Сеттеры
     void setCompanyName(const std::string& companyName);
 
     // Управление персоналом
-    void addStaff(Staff* person);
+    void addStaff(std::shared_ptr<Staff> person);
     void deleteStaff(int staffId);
 
     // Управление складами
-    void addWarehouse(Warehouse* warehouse);
+    void addWarehouse(std::shared_ptr<Warehouse> warehouse);
     void deleteWarehouse(int warehouseId);
 
     // Управление строительными объектами
-    void buildNewObject(ConstructionObject* object);
+    void buildNewObject(std::shared_ptr<ConstructionObject> object);
     void sellObject(int objectId);
 
     // Отображение информации
@@ -49,5 +49,3 @@ public:
     void displayAllWarehouses() const;
     void displayAllObjects() const;
 };
-
-#endif // CONSTRUCTION_COMPANY_HPP

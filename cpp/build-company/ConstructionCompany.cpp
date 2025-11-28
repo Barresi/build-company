@@ -17,15 +17,15 @@ std::string ConstructionCompany::getCompanyName() const {
     return companyName;
 }
 
-const std::vector<Staff*>& ConstructionCompany::getStaff() const {
+const std::vector<std::shared_ptr<Staff>>& ConstructionCompany::getStaff() const {
     return staff;
 }
 
-const std::vector<Warehouse*>& ConstructionCompany::getWarehouses() const {
+const std::vector<std::shared_ptr<Warehouse>>& ConstructionCompany::getWarehouses() const {
     return warehouses;
 }
 
-const std::vector<ConstructionObject*>& ConstructionCompany::getConstructionObjects() const {
+const std::vector<std::shared_ptr<ConstructionObject>>& ConstructionCompany::getConstructionObjects() const {
     return constructionObjects;
 }
 
@@ -35,8 +35,8 @@ void ConstructionCompany::setCompanyName(const std::string& companyName) {
 }
 
 // Добавление сотрудника
-void ConstructionCompany::addStaff(Staff* person) {
-    if (person != nullptr) {
+void ConstructionCompany::addStaff(std::shared_ptr<Staff> person) {
+    if (person) {
         staff.push_back(person);
         std::cout << "Добавлен сотрудник: " << person->getFullname() << std::endl;
     }
@@ -53,8 +53,8 @@ void ConstructionCompany::deleteStaff(int staffId) {
 }
 
 // Добавление склада
-void ConstructionCompany::addWarehouse(Warehouse* warehouse) {
-    if (warehouse != nullptr) {
+void ConstructionCompany::addWarehouse(std::shared_ptr<Warehouse> warehouse) {
+    if (warehouse) {
         warehouses.push_back(warehouse);
         std::cout << "Добавлен склад по адресу: " << warehouse->getAddress() << std::endl;
     }
@@ -71,8 +71,8 @@ void ConstructionCompany::deleteWarehouse(int warehouseId) {
 }
 
 // Добавление строительного объекта
-void ConstructionCompany::buildNewObject(ConstructionObject* object) {
-    if (object != nullptr) {
+void ConstructionCompany::buildNewObject(std::shared_ptr<ConstructionObject> object) {
+    if (object) {
         constructionObjects.push_back(object);
         std::cout << "Начат новый строительный проект по адресу: " << object->getAddress() << std::endl;
     }

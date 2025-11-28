@@ -1,5 +1,4 @@
-#ifndef STRUCTURAL_MATERIAL_HPP
-#define STRUCTURAL_MATERIAL_HPP
+#pragma once
 
 #include "Material.hpp"
 
@@ -40,5 +39,3 @@ public:
     // Переопределение функции отображения информации
     void displayInfo() const override;
 };
-
-#endif // STRUCTURAL_MATERIAL_HPP

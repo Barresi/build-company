@@ -17,20 +17,22 @@ public abstract class Material
     }
 
     /// <summary>
-    /// Получить название материала
+    /// Свойство для получения и установки названия материала
     /// </summary>
-    public string GetName()
+    public string Name
     {
-        return name;
+        get { return name; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Название материала не может быть пустым");
+            name = value;
+        }
     }
 
-    /// <summary>
-    /// Установить название материала
-    /// </summary>
-    public void SetName(string name)
-    {
-        this.name = name;
-    }
+    // Устаревшие методы для обратной совместимости
+    public string GetName() => Name;
+    public void SetName(string name) => Name = name;
 
     /// <summary>
     /// Абстрактный метод для отображения информации о материале
