@@ -1,5 +1,4 @@
-#ifndef MATERIAL_HPP
-#define MATERIAL_HPP
+#pragma once
 
 #include <string>
 
@@ -24,5 +23,3 @@ public:
     // Чисто виртуальная функция для отображения информации о материале
     virtual void displayInfo() const = 0;
 };
-
-#endif // MATERIAL_HPP

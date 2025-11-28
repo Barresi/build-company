@@ -1,5 +1,4 @@
-#ifndef WAREHOUSE_HPP
-#define WAREHOUSE_HPP
+#pragma once
 
 #include "Material.hpp"
 #include "Equipment.hpp"
@@ -40,5 +39,3 @@ public:
     void displayInfo() const;
     void displayInventory() const;
 };
-
-#endif // WAREHOUSE_HPP

@@ -1,5 +1,4 @@
-#ifndef CONSTRUCTION_OBJECT_HPP
-#define CONSTRUCTION_OBJECT_HPP
+#pragma once
 
 #include "Enums.hpp"
 #include <string>
@@ -31,5 +30,3 @@ public:
     // Отображение информации
     void displayInfo() const;
 };
-
-#endif // CONSTRUCTION_OBJECT_HPP

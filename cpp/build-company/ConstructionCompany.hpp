@@ -1,5 +1,4 @@
-#ifndef CONSTRUCTION_COMPANY_HPP
-#define CONSTRUCTION_COMPANY_HPP
+#pragma once
 
 #include "Staff.hpp"
 #include "Warehouse.hpp"
@@ -49,5 +48,3 @@ public:
     void displayAllWarehouses() const;
     void displayAllObjects() const;
 };
-
-#endif // CONSTRUCTION_COMPANY_HPP

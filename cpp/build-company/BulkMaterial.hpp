@@ -1,5 +1,4 @@
-#ifndef BULK_MATERIAL_HPP
-#define BULK_MATERIAL_HPP
+#pragma once
 
 #include "Material.hpp"
 #include "Enums.hpp"
@@ -32,5 +31,3 @@ public:
     // Переопределение функции отображения информации
     void displayInfo() const override;
 };
-
-#endif // BULK_MATERIAL_HPP

@@ -1,5 +1,4 @@
-#ifndef ENUMS_HPP
-#define ENUMS_HPP
+#pragma once
 
 #include <string>
 
@@ -175,5 +174,3 @@ inline std::string fuelTypeToString(FuelType type) {
         default: return "Unknown";
     }
 }
-
-#endif // ENUMS_HPP

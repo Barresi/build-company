@@ -1,5 +1,4 @@
-#ifndef STAFF_HPP
-#define STAFF_HPP
+#pragma once
 
 #include "Enums.hpp"
 #include "ConstructionObject.hpp"
@@ -49,5 +48,3 @@ public:
     // Отображение информации
     void displayInfo() const;
 };
-
-#endif // STAFF_HPP
