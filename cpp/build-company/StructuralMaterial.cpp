@@ -48,22 +48,22 @@ void StructuralMaterial::setCount(int count) {
 
 // Добавление количества
 void StructuralMaterial::addCount(int amount) {
-    if (amount > 0) {
-        count += amount;
-        std::cout << "Добавлено " << amount << " шт. " << name
-                  << ". Новое количество: " << count << std::endl;
-    }
+    if (amount <= 0) return;
+    count += amount;
+    std::cout << "Добавлено " << amount << " шт. " << name
+              << ". Новое количество: " << count << std::endl;
 }
 
 // Удаление количества
 void StructuralMaterial::removeCount(int amount) {
-    if (amount > 0 && amount <= count) {
-        count -= amount;
-        std::cout << "Удалено " << amount << " шт. " << name
-                  << ". Осталось: " << count << std::endl;
-    } else if (amount > count) {
+    if (amount <= 0) return;
+    if (amount > count) {
         std::cout << "Ошибка: Невозможно удалить " << amount << ". Доступно только " << count << std::endl;
+        return;
     }
+    count -= amount;
+    std::cout << "Удалено " << amount << " шт. " << name
+              << ". Осталось: " << count << std::endl;
 }
 
 // Вычисление объема одной единицы
