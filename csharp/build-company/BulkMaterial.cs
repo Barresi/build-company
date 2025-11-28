@@ -22,36 +22,33 @@ public class BulkMaterial : Material
     }
 
     /// <summary>
-    /// Получить единицу измерения
+    /// Свойство для единицы измерения
     /// </summary>
-    public MeasureType GetMeasureUnit()
+    public MeasureType MeasureUnit
     {
-        return measureUnit;
+        get { return measureUnit; }
+        set { measureUnit = value; }
     }
 
     /// <summary>
-    /// Получить количество
+    /// Свойство для количества с валидацией
     /// </summary>
-    public float GetCount()
+    public float Count
     {
-        return count;
+        get { return count; }
+        set
+        {
+            if (value < 0)
+                throw new ArgumentException("Количество материала не может быть отрицательным");
+            count = value;
+        }
     }
 
-    /// <summary>
-    /// Установить единицу измерения
-    /// </summary>
-    public void SetMeasureUnit(MeasureType measureUnit)
-    {
-        this.measureUnit = measureUnit;
-    }
-
-    /// <summary>
-    /// Установить количество
-    /// </summary>
-    public void SetCount(float count)
-    {
-        this.count = count;
-    }
+    // Устаревшие методы для обратной совместимости
+    public MeasureType GetMeasureUnit() => MeasureUnit;
+    public float GetCount() => Count;
+    public void SetMeasureUnit(MeasureType measureUnit) => MeasureUnit = measureUnit;
+    public void SetCount(float count) => Count = count;
 
     /// <summary>
     /// Добавить количество
@@ -63,18 +60,43 @@ public class BulkMaterial : Material
     }
 
     /// <summary>
-    /// Удалить количество
+    /// Удалить количество (с выбросом исключения при недостатке)
     /// </summary>
     public void RemoveCount(float amount)
     {
-        if (count >= amount)
+        if (amount < 0)
         {
-            count -= amount;
-            Console.WriteLine($"Removed {amount} {measureUnit.ToDisplayString()}. New count: {count}");
+            throw new ArgumentException("Количество для удаления не может быть отрицательным");
         }
-        else
+
+        if (count < amount)
         {
-            Console.WriteLine($"Cannot remove {amount} {measureUnit.ToDisplayString()}. Only {count} available.");
+            throw new InsufficientMaterialException(amount, count);
+        }
+
+        count -= amount;
+        Console.WriteLine($"Removed {amount} {measureUnit.ToDisplayString()}. New count: {count}");
+    }
+
+    /// <summary>
+    /// Попытаться удалить количество (безопасная версия с try-catch)
+    /// </summary>
+    public bool TryRemoveCount(float amount)
+    {
+        try
+        {
+            RemoveCount(amount);
+            return true;
+        }
+        catch (InsufficientMaterialException ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+            return false;
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Ошибка валидации: {ex.Message}");
+            return false;
         }
     }
 

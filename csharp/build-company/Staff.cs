@@ -29,108 +29,99 @@ public class Staff
     }
 
     /// <summary>
-    /// Получить полное имя
+    /// Свойство для полного имени
     /// </summary>
-    public string GetFullname()
+    public string Fullname
     {
-        return fullname;
+        get { return fullname; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Имя сотрудника не может быть пустым");
+            fullname = value;
+        }
     }
 
     /// <summary>
-    /// Получить должность
+    /// Свойство для должности
     /// </summary>
-    public StaffRank GetRank()
+    public StaffRank Rank
     {
-        return rank;
+        get { return rank; }
+        set { rank = value; }
     }
 
     /// <summary>
-    /// Получить специализацию
+    /// Свойство для специализации
     /// </summary>
-    public StaffSpecialization GetSpecialization()
+    public StaffSpecialization Specialization
     {
-        return specialization;
+        get { return specialization; }
+        set { specialization = value; }
     }
 
     /// <summary>
-    /// Получить телефон
+    /// Свойство для телефона с валидацией
     /// </summary>
-    public string GetTelephone()
+    public string Telephone
     {
-        return telephone;
+        get { return telephone; }
+        set
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentException("Номер телефона не может быть пустым");
+            telephone = value;
+        }
     }
 
     /// <summary>
-    /// Получить дату найма
+    /// Свойство для даты найма (только для чтения после создания)
     /// </summary>
-    public string GetHiringDate()
+    public string HiringDate
     {
-        return hiringDate;
+        get { return hiringDate; }
+        private set { hiringDate = value; }
     }
 
     /// <summary>
-    /// Получить зарплату
+    /// Свойство для зарплаты с валидацией
     /// </summary>
-    public int GetSalary()
+    public int Salary
     {
-        return salary;
+        get { return salary; }
+        set
+        {
+            if (value < 0)
+                throw new ArgumentException("Зарплата не может быть отрицательной");
+            if (value < 30000)
+                throw new ArgumentException("Зарплата не может быть меньше минимальной ($30,000)");
+            salary = value;
+        }
     }
 
     /// <summary>
-    /// Получить список проектов
+    /// Свойство для списка проектов (только для чтения)
     /// </summary>
-    public List<ConstructionObject> GetConstructionObjects()
+    public List<ConstructionObject> ConstructionObjects
     {
-        return constructionObjects;
+        get { return constructionObjects; }
     }
 
-    /// <summary>
-    /// Установить полное имя
-    /// </summary>
-    public void SetFullname(string fullname)
-    {
-        this.fullname = fullname;
-    }
+    // Устаревшие методы для обратной совместимости
+    public string GetFullname() => Fullname;
+    public StaffRank GetRank() => Rank;
+    public StaffSpecialization GetSpecialization() => Specialization;
+    public string GetTelephone() => Telephone;
+    public string GetHiringDate() => HiringDate;
+    public int GetSalary() => Salary;
+    public List<ConstructionObject> GetConstructionObjects() => ConstructionObjects;
 
-    /// <summary>
-    /// Установить должность
-    /// </summary>
-    public void SetRank(StaffRank rank)
-    {
-        this.rank = rank;
-    }
-
-    /// <summary>
-    /// Установить специализацию
-    /// </summary>
-    public void SetSpecialization(StaffSpecialization specialization)
-    {
-        this.specialization = specialization;
-    }
-
-    /// <summary>
-    /// Установить телефон
-    /// </summary>
-    public void SetTelephone(string telephone)
-    {
-        this.telephone = telephone;
-    }
-
-    /// <summary>
-    /// Установить дату найма
-    /// </summary>
-    public void SetHiringDate(string hiringDate)
-    {
-        this.hiringDate = hiringDate;
-    }
-
-    /// <summary>
-    /// Установить зарплату
-    /// </summary>
-    public void SetSalary(int salary)
-    {
-        this.salary = salary;
-    }
+    public void SetFullname(string fullname) => Fullname = fullname;
+    public void SetRank(StaffRank rank) => Rank = rank;
+    public void SetSpecialization(StaffSpecialization specialization) => Specialization = specialization;
+    public void SetTelephone(string telephone) => Telephone = telephone;
+    public void SetHiringDate(string hiringDate) => HiringDate = hiringDate;
+    public void SetSalary(int salary) => Salary = salary;
 
     /// <summary>
     /// Назначить на объект

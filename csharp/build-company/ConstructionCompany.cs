@@ -5,6 +5,9 @@ namespace BuildCompany;
 /// </summary>
 public class ConstructionCompany
 {
+    // Статическое поле для подсчета количества созданных компаний
+    private static int totalCompaniesCreated = 0;
+
     private string companyName;
     private List<Staff> staff;
     private List<Warehouse> warehouses;
@@ -20,6 +23,27 @@ public class ConstructionCompany
         this.staff = new List<Staff>();
         this.warehouses = new List<Warehouse>();
         this.constructionObjects = new List<ConstructionObject>();
+
+        // Увеличиваем статический счетчик при создании новой компании
+        totalCompaniesCreated++;
+    }
+
+    /// <summary>
+    /// Статический метод для получения общего количества созданных компаний
+    /// </summary>
+    /// <returns>Количество созданных компаний</returns>
+    public static int GetTotalCompaniesCreated()
+    {
+        return totalCompaniesCreated;
+    }
+
+    /// <summary>
+    /// Статический метод для получения статистики по всем компаниям
+    /// </summary>
+    public static void DisplayStatistics()
+    {
+        Console.WriteLine($"\n=== Статистика строительных компаний ===");
+        Console.WriteLine($"Всего создано компаний: {totalCompaniesCreated}");
     }
 
     /// <summary>
@@ -72,15 +96,28 @@ public class ConstructionCompany
     }
 
     /// <summary>
-    /// Удалить сотрудника
+    /// Удалить сотрудника (с обработкой исключений)
     /// </summary>
     public void DeleteStaff(int staffId)
     {
-        if (staffId >= 0 && staffId < staff.Count)
+        try
         {
+            if (staffId < 0 || staffId >= staff.Count)
+            {
+                throw new IndexOutOfRangeException($"Индекс сотрудника {staffId} вне диапазона (0-{staff.Count - 1})");
+            }
+
             var person = staff[staffId];
             staff.RemoveAt(staffId);
             Console.WriteLine($"Staff member '{person.GetFullname()}' removed from {companyName}");
+        }
+        catch (IndexOutOfRangeException ex)
+        {
+            Console.WriteLine($"Ошибка удаления сотрудника: {ex.Message}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Неожиданная ошибка при удалении сотрудника: {ex.Message}");
         }
     }
 

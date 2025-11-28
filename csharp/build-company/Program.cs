@@ -205,6 +205,180 @@ GC.Collect();
 GC.WaitForPendingFinalizers();
 Console.WriteLine("Сборка мусора выполнена.");
 
+// ===================================================================
+// 6. ДЕМОНСТРАЦИЯ СТАТИЧЕСКИХ ПОЛЕЙ И МЕТОДОВ
+// ===================================================================
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 6: Статические поля и методы ###\n");
+
+// Создаем несколько компаний для демонстрации статического счетчика
+ConstructionCompany company2 = new ConstructionCompany("ABC Construction Ltd.");
+ConstructionCompany company3 = new ConstructionCompany("XYZ Builders Inc.");
+
+// Вызываем статический метод для получения статистики
+Console.WriteLine($"Количество созданных компаний (через статический метод): {ConstructionCompany.GetTotalCompaniesCreated()}");
+
+// Вызываем статический метод для отображения статистики
+ConstructionCompany.DisplayStatistics();
+
+// ===================================================================
+// 7. ДЕМОНСТРАЦИЯ СВОЙСТВ С GET/SET
+// ===================================================================
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 7: Свойства с get/set аксессорами ###\n");
+
+// Использование свойств вместо методов Get/Set
+Console.WriteLine("--- Работа со свойствами материала ---");
+BulkMaterial gravel = new BulkMaterial("Crushed Gravel", MeasureType.CubicMeters, 75.0f);
+
+// Чтение через свойство
+Console.WriteLine($"Название материала (через свойство): {gravel.Name}");
+Console.WriteLine($"Количество (через свойство): {gravel.Count} {gravel.MeasureUnit.ToDisplayString()}");
+
+// Изменение через свойство с валидацией
+try
+{
+    gravel.Count = 100.0f;
+    Console.WriteLine($"Новое количество: {gravel.Count}");
+
+    // Попытка установить отрицательное значение (вызовет исключение)
+    Console.WriteLine("\nПопытка установить отрицательное количество...");
+    gravel.Count = -10.0f;
+}
+catch (ArgumentException ex)
+{
+    Console.WriteLine($"Ошибка валидации: {ex.Message}");
+}
+
+Console.WriteLine("\n--- Работа со свойствами сотрудника ---");
+Staff testWorker = new Staff("Test Worker", StaffRank.Worker, StaffSpecialization.Mason,
+                             "+1-555-9999", "2024-01-01", 45000);
+
+// Использование свойств
+Console.WriteLine($"Сотрудник: {testWorker.Fullname}");
+Console.WriteLine($"Зарплата: ${testWorker.Salary}");
+
+try
+{
+    // Попытка установить слишком низкую зарплату
+    Console.WriteLine("\nПопытка установить зарплату ниже минимальной...");
+    testWorker.Salary = 25000;
+}
+catch (ArgumentException ex)
+{
+    Console.WriteLine($"Ошибка валидации: {ex.Message}");
+}
+
+// ===================================================================
+// 8. ДЕМОНСТРАЦИЯ TRY-CATCH И THROW
+// ===================================================================
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 8: Обработка исключений (try-catch, throw) ###\n");
+
+Console.WriteLine("--- Пример 1: Недостаточное количество материала ---");
+BulkMaterial concrete = new BulkMaterial("Concrete Mix", MeasureType.Tons, 20.0f);
+
+try
+{
+    Console.WriteLine($"Текущее количество бетона: {concrete.Count} тонн");
+    Console.WriteLine("Попытка удалить 30 тонн (больше, чем есть)...");
+    concrete.RemoveCount(30.0f);
+}
+catch (InsufficientMaterialException ex)
+{
+    Console.WriteLine($"Поймано исключение InsufficientMaterialException:");
+    Console.WriteLine($"  Сообщение: {ex.Message}");
+    Console.WriteLine($"  Запрошено: {ex.RequestedAmount} тонн");
+    Console.WriteLine($"  Доступно: {ex.AvailableAmount} тонн");
+}
+
+Console.WriteLine("\n--- Пример 2: Безопасное удаление с TryRemoveCount ---");
+bool success = concrete.TryRemoveCount(15.0f);
+Console.WriteLine($"Удаление 15 тонн: {(success ? "Успешно" : "Ошибка")}");
+
+success = concrete.TryRemoveCount(10.0f);
+Console.WriteLine($"Удаление 10 тонн: {(success ? "Успешно" : "Ошибка")}");
+
+Console.WriteLine("\n--- Пример 3: Удаление сотрудника с несуществующим ID ---");
+company.DeleteStaff(999); // Вызовет обработку исключения внутри метода
+
+Console.WriteLine("\n--- Пример 4: Множественная обработка исключений ---");
+try
+{
+    Staff invalidStaff = new Staff("", StaffRank.Worker, StaffSpecialization.Mason,
+                                   "+1-555-0000", "2024-01-01", 50000);
+}
+catch (ArgumentException ex)
+{
+    Console.WriteLine($"Ошибка создания сотрудника: {ex.Message}");
+}
+
+// ===================================================================
+// 9. ДЕМОНСТРАЦИЯ USING STATEMENT
+// ===================================================================
+Console.WriteLine("\n\n### ДЕМОНСТРАЦИЯ 9: Using statement для управления ресурсами ###\n");
+
+string logFilePath = "construction_company.log";
+
+Console.WriteLine("--- Пример 1: Using statement с CompanyLogger ---");
+// using statement автоматически вызовет Dispose() в конце блока
+using (CompanyLogger logger = new CompanyLogger(logFilePath))
+{
+    logger.Log("Программа запущена");
+    logger.Log("Создана компания: " + company.GetCompanyName());
+    logger.Log($"Всего компаний создано: {ConstructionCompany.GetTotalCompaniesCreated()}");
+    logger.Log("Выполнены основные операции");
+} // Здесь автоматически вызывается logger.Dispose()
+
+Console.WriteLine($"Логи записаны в файл: {logFilePath}");
+
+Console.WriteLine("\n--- Пример 2: Статический метод с using для записи в лог ---");
+CompanyLogger.LogToFile(logFilePath, "Статический метод записи в лог");
+CompanyLogger.LogToFile(logFilePath, $"Материал обработан: {concrete.Name}");
+
+Console.WriteLine("\n--- Пример 3: Чтение логов с использованием using ---");
+string logs = CompanyLogger.ReadLogs(logFilePath, 5);
+Console.WriteLine("Последние записи из лога:");
+Console.WriteLine(logs);
+
+Console.WriteLine("\n--- Пример 4: Try-catch с using для безопасной работы с файлами ---");
+try
+{
+    using (StreamWriter reportWriter = new StreamWriter("company_report.txt"))
+    {
+        reportWriter.WriteLine("=== Отчет строительной компании ===");
+        reportWriter.WriteLine($"Компания: {company.GetCompanyName()}");
+        reportWriter.WriteLine($"Всего сотрудников: {company.GetStaff().Count}");
+        reportWriter.WriteLine($"Всего складов: {company.GetWarehouses().Count}");
+        reportWriter.WriteLine($"Всего проектов: {company.GetConstructionObjects().Count}");
+        reportWriter.WriteLine($"Дата отчета: {DateTime.Now}");
+    } // StreamWriter автоматически закрывается здесь
+
+    Console.WriteLine("Отчет сохранен в файл: company_report.txt");
+
+    // Чтение отчета
+    using (StreamReader reportReader = new StreamReader("company_report.txt"))
+    {
+        Console.WriteLine("\nСодержимое отчета:");
+        Console.WriteLine(reportReader.ReadToEnd());
+    } // StreamReader автоматически закрывается здесь
+}
+catch (IOException ex)
+{
+    Console.WriteLine($"Ошибка работы с файлом: {ex.Message}");
+}
+
+// ===================================================================
+// ИТОГОВАЯ СТАТИСТИКА
+// ===================================================================
+Console.WriteLine("\n\n### ИТОГОВАЯ СТАТИСТИКА ###\n");
+
+Console.WriteLine("Продемонстрированные концепции C#:");
+Console.WriteLine("✓ Статическое поле (totalCompaniesCreated) и статический метод (GetTotalCompaniesCreated)");
+Console.WriteLine("✓ Свойства с get/set аксессорами и валидацией (Name, Count, Salary)");
+Console.WriteLine("✓ Try-catch блоки для перехвата исключений");
+Console.WriteLine("✓ Throw для инициализации исключений (ArgumentException, InsufficientMaterialException)");
+Console.WriteLine("✓ Using statement для автоматического управления ресурсами (StreamWriter, StreamReader, CompanyLogger)");
+Console.WriteLine("✓ Пользовательские исключения (ConstructionException, InsufficientMaterialException)");
+Console.WriteLine("✓ IDisposable интерфейс и правильное освобождение ресурсов");
+
 Console.WriteLine("\n========================================");
 Console.WriteLine("Программа успешно завершена!");
 Console.WriteLine("========================================");
